@@ -33,8 +33,8 @@ class Bsag
     form.type_destination = "stop"
     form.nameState_origin = "empty"
     form.nameState_destination = "empty"
-    form.name_origin = "#{}UNIVERS./Zentralbereich"
-    form.name_destination = "#{}HAUPTBAHNHOF"
+    form.name_origin = "#{self.start_station}"
+    form.name_destination = "#{self.stop_station}"
     form.itdTimeHour = "#{Time.now.hour}" # als 9 
     form.itdTimeMinute = "#{Time.now.min}" # als 1
     form.itdDateDay = "#{Time::now.strftime("%d")}"
