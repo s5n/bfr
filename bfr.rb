@@ -10,6 +10,8 @@ require 'mechanize'
 # Hauptbahnhof
 
 class Bsag
+  attr_accessor :start_station, :stop_station
+
   def initialize(start_station="Univers./Zentralbereich", stop_station="Hauptbahnhof")
     @start_station = start_station
     @stop_station = stop_station
@@ -19,19 +21,53 @@ class Bsag
     agent = Mechanize.new { |a| a.user_agent = ' Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:18.0) Gecko/20100101 Firefox/18.0' }
     page = agent.get('http://www.bsag.de/')
     
-    page.links.each do |link|
-      puts link.text
-    end
+    #page.links.each do |link|
+    #  puts link.text
+    #end
+    # page.forms[0] -> Suche
+    #
+    form = page.forms[1]
+    form.language = "de"
+    form.sessionID = "0"
+    form.useRealtime = "1"
+    form.place_origin = "Bremen"
+    form.place_destination = "Bremen"
+    form.type_origin = "stop"
+    form.type_destination = "stop"
+    form.nameState_origin = "empty"
+    form.nameState_destination = "empty"
+    form.name_origin = "#{}UNIVERS./Zentralbereich"
+    form.name_destination = "#{}HAUPTBAHNHOF"
+    form.itdTimeHour = "#{Time.now.hour}" # als 9 
+    form.itdTimeMinute = "#{Time.now.min}" # als 1
+    form.itdDateDay = "#{Time::now.strftime("%d")}"
+    form.itdDateMonth = "#{Time::now.strftime("%m")}"
+    form.itdDateYear = "#{Time::now.strftime("%Y")}"
+    form.itdTripDateTimeDepArr = "dep"
 
-    puts "nun noch die Haltestellen"
-    puts self.start_station
-    puts self.stop_station
+    page = agent.submit(form, form.buttons.first)
+
+    #puts "Nun noch die Haltestellen:"
+    #puts self.start_station
+    #puts self.stop_station
+
+    pp page
   end
   
   
 end
 
-bsag = Bsag.new(ARGV[0], ARGV[1])
+#test
+#page = agent.get('http://www.bsag.de/')
+#form = page.forms[1]
+
+#form.fields.each { |f| puts f.name }
+
+
+
+
+#ARGV[0], ARGV[1] ? 
+bsag = Bsag.new()
 bsag.search_connection
 
 
