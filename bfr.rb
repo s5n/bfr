@@ -5,9 +5,6 @@ require 'rubygems'
 require 'nokogiri'
 require 'mechanize'
 
-#source, destination, 
-# Univers./Zentralbereich
-# Hauptbahnhof
 
 class Bsag
   attr_accessor :start_station, :stop_station
@@ -25,7 +22,7 @@ class Bsag
     #  puts link.text
     #end
     # page.forms[0] -> Suche
-    #
+    # 
     form = page.forms[1]
     form.language = "de"
     form.sessionID = "0"
@@ -47,24 +44,11 @@ class Bsag
 
     page = agent.submit(form, form.buttons.first)
 
-    #puts "Nun noch die Haltestellen:"
-    #puts self.start_station
-    #puts self.stop_station
-
     pp page
   end
   
   
 end
-
-#test
-#page = agent.get('http://www.bsag.de/')
-#form = page.forms[1]
-
-#form.fields.each { |f| puts f.name }
-
-
-
 
 #ARGV[0], ARGV[1] ? 
 bsag = Bsag.new()
